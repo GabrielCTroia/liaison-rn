@@ -1,7 +1,10 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
+import { StorybookContainer } from './storybook/StorybookContainer';
 
 export default function App() {
+  return <StorybookContainer />
+
   return (
     <View style={styles.container}>
       <Text>Open up App.tsx to start working on your app!</Text>
