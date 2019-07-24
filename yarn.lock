@@ -1070,6 +1070,16 @@
     prop-types "^15.7.2"
     qs "^6.6.0"
 
+"@storybook/addon-ondevice-actions@^5.1.9":
+  version "5.1.9"
+  resolved "https://registry.yarnpkg.com/@storybook/addon-ondevice-actions/-/addon-ondevice-actions-5.1.9.tgz#a664b4f00a40fda3e952a2aaa65e92085b902139"
+  integrity sha512-YkuiHyavdNj1d9rVaSO/ykFqKEy74wusUoDjV/XnKTTiCIQvn4g5XVPFJceqcqzkxjyitkc58RkpaC79Tz2a5w==
+  dependencies:
+    "@storybook/addons" "5.1.9"
+    "@storybook/core-events" "5.1.9"
+    core-js "^2.5.7"
+    fast-deep-equal "^2.0.1"
+
 "@storybook/addons@5.1.9", "@storybook/addons@^5.1.9":
   version "5.1.9"
   resolved "https://registry.yarnpkg.com/@storybook/addons/-/addons-5.1.9.tgz#ecf218d08508b97ca5e6e0f1ed361081385bd3ff"
@@ -2100,7 +2110,7 @@ core-js@^1.0.0:
   resolved "https://registry.yarnpkg.com/core-js/-/core-js-1.2.7.tgz#652294c14651db28fa93bd2d5ff2983a4f08c636"
   integrity sha1-ZSKUwUZR2yj6k70tX/KYOk8IxjY=
 
-core-js@^2.2.2, core-js@^2.4.0, core-js@^2.4.1:
+core-js@^2.2.2, core-js@^2.4.0, core-js@^2.4.1, core-js@^2.5.7:
   version "2.6.9"
   resolved "https://registry.yarnpkg.com/core-js/-/core-js-2.6.9.tgz#6b4b214620c834152e179323727fc19741b084f2"
   integrity sha512-HOpZf6eXmnl7la+cUdMnLvUxKNqLUzJvgIziQ0DiF3JwSImNphIqdGqzj6hIKyX04MmV0poclQ7+wjWvxQyR2A==
