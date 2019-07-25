@@ -1,1 +1,1 @@
-import * as ButtonStory from './Record/Button.story';
+export * from './RecordButton/RecordButton.story';
