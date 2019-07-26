@@ -1,1 +1,1 @@
-export * from './RecordButton/RecordButton.story';
+export * from './screens/HomeScreen/components/RecordButton/RecordButton.story';

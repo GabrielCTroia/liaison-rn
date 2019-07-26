@@ -1,4 +1,4 @@
-import React, { FunctionComponent } from 'react';
+import React, { FunctionComponent } from './node_modules/react';
 import { View, StyleSheet, ViewProps } from 'react-native';
 
 export const CenterView: FunctionComponent<ViewProps> = ({ children }) => {
