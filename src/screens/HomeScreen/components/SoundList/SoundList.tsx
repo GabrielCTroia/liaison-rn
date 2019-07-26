@@ -1,7 +1,9 @@
 import React, { FunctionComponent } from 'react';
-import { StyleSheet, ViewProps, View, FlatList, Text } from 'react-native';
+import { StyleSheet, ViewProps, View, FlatList, Text, TouchableOpacity } from 'react-native';
 import { InputField } from '../../../../components/InputField';
-import { Effects } from '../../../../styles';
+import { Effects, Colors } from '../../../../styles';
+import { Player } from '../../../../lib/Player';
+import Swipeout from 'react-native-swipeout';
 
 export type SoundEntry = {
   uri: string;
@@ -10,23 +12,43 @@ export type SoundEntry = {
 
 type SoundListProps = ViewProps & {
   items: SoundEntry[];
+  onDelete: (item: SoundEntry) => void;
 }
 
+
 export class SoundList extends React.Component<SoundListProps> {
+  private player: Player;
+
+  constructor(props: SoundListProps) {
+    super(props);
+
+    this.player = new Player();
+  }
+
   render() {
     return (
       <View style={styles.container}>
         <View style={styles.searchContainer}>
-          <InputField style={styles.input} placeholder="Search"/>
+          <InputField style={styles.input} placeholder="Search" />
         </View>
         <FlatList
           style={styles.list}
           data={this.props.items}
           keyExtractor={(item) => item.name}
           renderItem={({ item }) => (
-            <View style={styles.itemContainer}>
-              <Text style={styles.itemText}>{item.name}</Text>
-            </View>
+            <Swipeout style={styles.swipeOut} right={[
+              {
+                text: 'Delete',
+                backgroundColor: Colors.red,
+                onPress: () => this.props.onDelete(item),
+              }
+            ]}>
+              <View style={styles.itemContainer}>
+                <TouchableOpacity onPress={() => this.player.play(item.uri)}>
+                  <Text style={styles.itemText}>{item.name}</Text>
+                </TouchableOpacity>
+              </View>
+            </Swipeout>
           )}
         />
       </View>
@@ -52,10 +74,13 @@ const styles = StyleSheet.create({
   list: {
     // marginTop: 60,
   },
+  swipeOut: {
+    marginBottom: 1,
+  },
   itemContainer: {
     backgroundColor: 'white',
     padding: 20,
-    marginBottom: 1,
+
   },
   itemText: {
     fontSize: 20,

@@ -1,9 +1,12 @@
 import React from 'react';
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet, View, AsyncStorage } from 'react-native';
 import { Colors } from '../../styles';
 import { RecordButton } from './components/RecordButton';
 import { SoundList, SoundEntry } from './components/SoundList/SoundList';
 import { SaveSound } from './components/SaveSound/SaveSound';
+import { Persist } from '../../lib/Persist';
+
+const persist = new Persist();
 
 export type HomeScreenProps = {
   // navigation: NavigationScreenProp<any, any>;
@@ -29,24 +32,47 @@ export class HomeScreen extends React.Component<HomeScreenProps, State> {
     }
   }
 
+  async componentDidMount() {
+    this.setState({
+      soundItems: await persist.all(),
+    })
+  }
+
   private renderSaveAsInput() {
     if (!this.state.recordedSoundUri) {
       return null;
     }
 
-    return <SaveSound 
+    return <SaveSound
       soundUri={this.state.recordedSoundUri}
-      onSaved={(soundItem) => {
-        this.setState({
-          soundItems: [soundItem].concat(this.state.soundItems),
-          recordedSoundUri: undefined,
-        });
+      onSaved={async (soundItem) => {
+        // TODO: A bit manual and hacky until we have redux
+        await persist.create(soundItem.name, soundItem);
+
+        this.setState({ recordedSoundUri: undefined });
+
+        this.refreshSoundDerivedState();
       }}
     />
   }
 
+  private async refreshSoundDerivedState() {
+    const nextSounditems = await persist.all();
+
+    this.setState({
+      soundItems: nextSounditems,
+    })
+  }
+
   private renderList() {
-    return <SoundList items={this.state.soundItems} />
+    return <SoundList
+      items={this.state.soundItems}
+      onDelete={async (item) => {
+        await persist.remove(item.name);
+
+        this.refreshSoundDerivedState();
+      }}
+    />
   }
 
   render() {

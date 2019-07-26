@@ -33,7 +33,6 @@ export class SaveSound extends React.Component<SoundListProps, State> {
     await this.player.play(this.props.soundUri);
   }
 
-
   render() {
     return (
       <View style={styles.container}>
@@ -61,7 +60,6 @@ export class SaveSound extends React.Component<SoundListProps, State> {
                 uri: this.props.soundUri,
               });
             }}
-            // style={styles.inputButton}
             title="Done"
           />
         </View>
@@ -72,27 +70,11 @@ export class SaveSound extends React.Component<SoundListProps, State> {
 
 const styles = StyleSheet.create({
   container: {
-    // backgroundColor: 'red',
-    // flex: 1,
-    // width: '100%',
-
-    // backgroundColor: Colors.red,
-
     position: 'absolute',
-    // backgroundColor: Colors.white,
-    // width: Layout.screenWidth - 100,
-    // marginLeft: 50,
-    // marginRight: 50,
-    // backgroundColor: 'red',
     left: '10%',
     right: '10%',
     top: (Layout.screenHeight / 2) - 140,
-    // paddingHorizontal: 30,
     padding: 30,
-    // top: 400,
-    // height: Layout.screenHeight / 1.5,
-    // bottom: 0,
-
     display: 'flex',
     alignContent: 'center',
     alignItems: 'center',
@@ -113,7 +95,6 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   inputButton: {
-    // paddingLeft: 40,
     fontSize: 16,
     color: '#2D9CDB',
   },
