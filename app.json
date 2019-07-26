@@ -25,9 +25,6 @@
     ],
     "ios": {
       "supportsTablet": true
-    },
-    "android.permissions": [
-      "RECORD_AUDIO"
-    ]
+    }
   }
 }
