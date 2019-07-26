@@ -28,5 +28,7 @@ const styles = StyleSheet.create({
   },
   input: {
     padding: 20,
+    fontSize: 20,
+    // fontFamily: ''
   }
 });

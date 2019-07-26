@@ -1,4 +1,4 @@
-import React, { FunctionComponent } from 'react';
+import React, { FunctionComponent, useEffect, useState } from 'react';
 import { StyleSheet, View, ViewProps, TouchableOpacity, Image } from 'react-native';
 import { Recorder, Sound } from './lib/Recorder';
 import { Colors } from '../../../../styles';
@@ -10,11 +10,19 @@ type RecordButtonProps = ViewProps & {
   onRecorded?: (uri: string) => void;
 }
 
+const recorder = new Recorder();
+
 export const RecordButton: FunctionComponent<RecordButtonProps> = (props) => {
-  const recorder = new Recorder();
 
-  recorder.prepare();
+  const [recordings, update] = useState(0);
 
+  useEffect(() => {
+    // This is done preemptively because otherwise it spends ~300ms of the recording
+    recorder.prepare();
+
+  // as long as we have a new recording we should preemptively prepare
+  }, [recordings]);
+  
   const startRecording = () => {
     recorder.start();
   }
@@ -26,7 +34,8 @@ export const RecordButton: FunctionComponent<RecordButtonProps> = (props) => {
 
     if (sound && props.onRecorded) {
       props.onRecorded(sound);
-      // recording.playAsync();
+
+      update(recordings + 1);
     }
   }
 

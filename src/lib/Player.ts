@@ -26,6 +26,8 @@ export class Player {
       await soundObject.playAsync();
     } catch (e) {
       console.log('Player Error', e);
+
+      throw e;
     }
   }
 }
