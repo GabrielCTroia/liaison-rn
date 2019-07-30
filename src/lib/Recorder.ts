@@ -7,10 +7,6 @@ export class Recorder {
   private activeRecording?: Audio.Recording;
   private preparedRecording?: Audio.Recording;
 
-  constructor() {
-    console.log('consutected');
-  }
-
   async askForPermissions() {
     const { status } = await Permissions.askAsync(Permissions.AUDIO_RECORDING);
 

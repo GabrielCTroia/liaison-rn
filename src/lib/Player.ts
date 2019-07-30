@@ -1,11 +1,14 @@
 import { Audio } from 'expo-av';
 
-
+// TODO: Allow only one instance of play at a given time!
+//       You need to look at the playing status
 export class Player {
   async play(uri: string) {
     const soundObject = new Audio.Sound();
 
     try {
+      console.log('Trying to play', uri);
+
       await Audio.setAudioModeAsync({
         allowsRecordingIOS: false,
         interruptionModeIOS: Audio.INTERRUPTION_MODE_IOS_DO_NOT_MIX,

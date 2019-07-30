@@ -5,6 +5,7 @@ import { Effects, Colors, Layout } from '../../../../styles';
 import { CircleButton } from '../../../../components/CircleButton';
 import { Player } from '../../../../lib/Player';
 import { SoundEntry } from '../SoundList/SoundList';
+import * as FileSystem from 'expo-file-system';
 
 type SoundListProps = {
   soundUri: string;
@@ -33,6 +34,21 @@ export class SaveSound extends React.Component<SoundListProps, State> {
     await this.player.play(this.props.soundUri);
   }
 
+  private async save() {
+    const fileName = this.props.soundUri.split('/').slice(-1)[0];
+    const nextUri = `${FileSystem.documentDirectory}${fileName}`;
+
+    await FileSystem.copyAsync({
+      from: this.props.soundUri,
+      to: nextUri,
+    });
+
+    this.props.onSaved({
+      name: this.state.soundName,
+      uri: nextUri,
+    });
+  }
+
   render() {
     return (
       <View style={styles.container}>
@@ -54,12 +70,7 @@ export class SaveSound extends React.Component<SoundListProps, State> {
           </View>
           <Button
             disabled={this.state.soundName.length === 0}
-            onPress={() => {
-              this.props.onSaved({
-                name: this.state.soundName,
-                uri: this.props.soundUri,
-              });
-            }}
+            onPress={() => this.save()}
             title="Done"
           />
         </View>

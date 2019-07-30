@@ -1,6 +1,6 @@
 import React, { FunctionComponent, useEffect, useState } from 'react';
 import { StyleSheet, View, ViewProps, TouchableOpacity, Image } from 'react-native';
-import { Recorder, Sound } from './lib/Recorder';
+import { Recorder, Sound } from '../../../../lib/Recorder';
 import { Colors } from '../../../../styles';
 import { CircleButton } from '../../../../components/CircleButton';
 
