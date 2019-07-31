@@ -9,3 +9,4 @@ npm-debug.*
 web-build/
 web-report/
 yarn-error.log
+.DS_Store

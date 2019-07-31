@@ -46,6 +46,7 @@ export class SoundList extends React.Component<SoundListProps> {
               <View style={styles.itemContainer}>
                 <TouchableOpacity onPress={() => this.player.play(item.uri)}>
                   <Text style={styles.itemText}>{item.name}</Text>
+                  <Text style={{ fontSize: 12 }}>{item.uri}</Text>
                 </TouchableOpacity>
               </View>
             </Swipeout>

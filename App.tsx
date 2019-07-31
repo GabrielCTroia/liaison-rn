@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import { StorybookContainer } from './storybook/StorybookContainer';
 import AppNavigator from './src/navigation/AppNavigator';
 

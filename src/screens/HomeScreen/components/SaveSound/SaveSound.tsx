@@ -6,6 +6,9 @@ import { CircleButton } from '../../../../components/CircleButton';
 import { Player } from '../../../../lib/Player';
 import { SoundEntry } from '../SoundList/SoundList';
 import * as FileSystem from 'expo-file-system';
+import { db } from '../../../../db';
+// import console = require('console');
+
 
 type SoundListProps = {
   soundUri: string;
@@ -43,10 +46,16 @@ export class SaveSound extends React.Component<SoundListProps, State> {
       to: nextUri,
     });
 
-    this.props.onSaved({
+    const resource = {
+      userId: 0, // This is hardcoded as me for now. Just here to allow me to think of users
       name: this.state.soundName,
       uri: nextUri,
-    });
+    }
+
+    // TODO: this should not be here!
+    await db.post(resource);
+
+    this.props.onSaved(resource);
   }
 
   render() {

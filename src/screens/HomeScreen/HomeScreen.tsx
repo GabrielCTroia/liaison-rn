@@ -1,10 +1,11 @@
 import React from 'react';
-import { StyleSheet, View, AsyncStorage } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import { Colors } from '../../styles';
 import { RecordButton } from './components/RecordButton';
 import { SoundList, SoundEntry } from './components/SoundList/SoundList';
 import { SaveSound } from './components/SaveSound/SaveSound';
 import { Persist } from '../../lib/Persist';
+import { db } from '../../db';
 
 const persist = new Persist();
 
@@ -32,10 +33,28 @@ export class HomeScreen extends React.Component<HomeScreenProps, State> {
     }
   }
 
-  async componentDidMount() {
+  private async refreshAllRecordings() {
+    const allRecordings = await db.allDocs({ include_docs: true });
+
     this.setState({
-      soundItems: await persist.all(),
-    })
+      soundItems: allRecordings.rows.map((r: any) => r.doc as SoundEntry),
+    });
+  }
+
+  componentWillMount() {
+    db.changes({
+      since: 'now',
+      live: true,
+      include_docs: true
+    }).on('change', () => {
+      // Here we could optimize but there's no need as of now!
+
+      this.refreshAllRecordings();
+    });
+  }
+
+  componentDidMount() {
+    this.refreshAllRecordings();
   }
 
   private renderSaveAsInput() {
@@ -45,32 +64,17 @@ export class HomeScreen extends React.Component<HomeScreenProps, State> {
 
     return <SaveSound
       soundUri={this.state.recordedSoundUri}
-      onSaved={async (soundItem) => {
-        // TODO: A bit manual and hacky until we have redux
-        await persist.create(soundItem.name, soundItem);
-
+      onSaved={async () => {
         this.setState({ recordedSoundUri: undefined });
-
-        this.refreshSoundDerivedState();
       }}
     />
-  }
-
-  private async refreshSoundDerivedState() {
-    const nextSounditems = await persist.all();
-
-    this.setState({
-      soundItems: nextSounditems,
-    })
   }
 
   private renderList() {
     return <SoundList
       items={this.state.soundItems}
-      onDelete={async (item) => {
-        await persist.remove(item.name);
-
-        this.refreshSoundDerivedState();
+      onDelete={(item: any) => {
+        db.remove(item);
       }}
     />
   }
@@ -107,14 +111,11 @@ const styles = StyleSheet.create({
     flex: .2,
   },
   content: {
-    // display: 'flex',
     flex: 1,
-    // backgroundColor: 'yellow',
     width: '100%',
   },
   footer: {
     flex: .2,
-    // alignSelf: 'center',
     position: 'relative',
     zIndex: 10,
   },
