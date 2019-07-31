@@ -36,12 +36,8 @@ export class Recorder {
 
   async prepare() {
     if (this.preparedRecording) {
-      console.log('attempted to prepare');
       return;
     }
-
-    const start = new Date()
-    console.log('preparing', start);
 
     await this.askForPermissions();
 
@@ -51,19 +47,14 @@ export class Recorder {
     await recording.prepareToRecordAsync(Audio.RECORDING_OPTIONS_PRESET_HIGH_QUALITY);
 
     this.preparedRecording = recording;
-
-    const stop = new Date();
-    console.log('finished preparing', stop, stop.getTime() - start.getTime());
   }
 
   async start() {
     if (this.activeRecording) {
-      console.log('currently recording');
       return;
     }
 
     if (!this.preparedRecording) {
-      console.log('no prepared recording');
       return;
     }
 

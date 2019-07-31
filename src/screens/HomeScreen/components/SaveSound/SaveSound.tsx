@@ -73,7 +73,7 @@ export class SaveSound extends React.Component<SoundListProps, State> {
               placeholder="Spell it..."
               autoFocus={true}
               onChangeText={(soundName) => {
-                this.setState({ soundName })
+                this.setState({ soundName });
               }}
             />
           </View>

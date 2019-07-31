@@ -4,10 +4,7 @@ import { Colors } from '../../styles';
 import { RecordButton } from './components/RecordButton';
 import { SoundList, SoundEntry } from './components/SoundList/SoundList';
 import { SaveSound } from './components/SaveSound/SaveSound';
-import { Persist } from '../../lib/Persist';
 import { db } from '../../db';
-
-const persist = new Persist();
 
 export type HomeScreenProps = {
   // navigation: NavigationScreenProp<any, any>;
@@ -16,6 +13,7 @@ export type HomeScreenProps = {
 type State = {
   recordedSoundUri?: string;
   soundItems: SoundEntry[];
+  queriedItems?: SoundEntry[];
 }
 
 export class HomeScreen extends React.Component<HomeScreenProps, State> {
@@ -30,6 +28,7 @@ export class HomeScreen extends React.Component<HomeScreenProps, State> {
     this.state = {
       recordedSoundUri: undefined,
       soundItems: [],
+      queriedItems: undefined,
     }
   }
 
@@ -71,10 +70,29 @@ export class HomeScreen extends React.Component<HomeScreenProps, State> {
   }
 
   private renderList() {
+
     return <SoundList
-      items={this.state.soundItems}
+      items={this.state.queriedItems || this.state.soundItems}
       onDelete={(item: any) => {
         db.remove(item);
+      }}
+      onSearch={(query) => {
+        if (!query) {
+          this.setState({
+            queriedItems: undefined,
+          });
+
+          return;
+        }
+
+        const normalizedQuery = query.toLowerCase();
+
+        const nextQueriedItems = this.state.soundItems
+          .filter((item) => item.name.slice(0, query.length).toLowerCase() === normalizedQuery);
+
+        this.setState({
+          queriedItems: nextQueriedItems,
+        });
       }}
     />
   }

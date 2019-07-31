@@ -13,6 +13,7 @@ export type SoundEntry = {
 type SoundListProps = ViewProps & {
   items: SoundEntry[];
   onDelete: (item: SoundEntry) => void;
+  onSearch: (query: string) => void;
 }
 
 
@@ -25,11 +26,22 @@ export class SoundList extends React.Component<SoundListProps> {
     this.player = new Player();
   }
 
+  static defaultProps = {
+    onDelete: () => { },
+    onSearch: () => { },
+  }
+
   render() {
     return (
       <View style={styles.container}>
         <View style={styles.searchContainer}>
-          <InputField style={styles.input} placeholder="Search" />
+          <InputField
+            style={styles.input}
+            placeholder="Search"
+            onChangeText={(query) => {
+              this.props.onSearch(query);
+            }}
+          />
         </View>
         <FlatList
           style={styles.list}
@@ -46,7 +58,6 @@ export class SoundList extends React.Component<SoundListProps> {
               <View style={styles.itemContainer}>
                 <TouchableOpacity onPress={() => this.player.play(item.uri)}>
                   <Text style={styles.itemText}>{item.name}</Text>
-                  <Text style={{ fontSize: 12 }}>{item.uri}</Text>
                 </TouchableOpacity>
               </View>
             </Swipeout>

@@ -17,6 +17,7 @@
     "expo-permissions": "^5.0.1",
     "pouchdb": "^7.1.1",
     "pouchdb-adapter-react-native-sqlite": "^2.0.0",
+    "pouchdb-find": "^7.1.1",
     "pouchdb-react-native": "^6.4.1",
     "react": "16.8.3",
     "react-dom": "^16.8.6",
