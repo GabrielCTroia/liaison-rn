@@ -41,6 +41,7 @@ export const RecordButton: FunctionComponent<RecordButtonProps> = (props) => {
 
   return (
     <CircleButton
+      style={props.style}
       color={Colors.red}
       iconSource={require("../../../../../assets/sound_wave_button.png")}
       onPressIn={startRecording}

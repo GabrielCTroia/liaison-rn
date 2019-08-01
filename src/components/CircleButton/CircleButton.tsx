@@ -12,14 +12,15 @@ export const CircleButton: FunctionComponent<RecordButtonProps> = (props) => {
     ? (<Image style={styles.icon} source={props.iconSource} />)
     : null;
 
+  const { style, ...rest } = props;
+
   return (
-    <TouchableOpacity {...props}>
-      <View style={[styles.container, {
+    <TouchableOpacity {...rest}
+      style={[styles.container, style, {
         ...props.color && { backgroundColor: props.color },
         ...props.size && { width: props.size, height: props.size },
       }]}>
-        {icon}
-      </View>
+      {icon}
     </TouchableOpacity>
   );
 }

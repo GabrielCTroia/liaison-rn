@@ -104,12 +104,12 @@ export class HomeScreen extends React.Component<HomeScreenProps, State> {
         <View style={styles.content}>
           {this.renderList()}
         </View>
-        <View style={styles.footer}>
-          <RecordButton onRecorded={(recordedSoundUri) => {
+        <RecordButton
+          style={styles.footer}
+          onRecorded={(recordedSoundUri) => {
             this.setState({ recordedSoundUri });
-          }} />
-        </View>
-
+          }}
+        />
         {this.renderSaveAsInput()}
       </View>
     );
@@ -133,8 +133,8 @@ const styles = StyleSheet.create({
     width: '100%',
   },
   footer: {
-    flex: .2,
-    position: 'relative',
+    bottom: 40,
+    position: 'absolute',
     zIndex: 10,
   },
 });
