@@ -11,6 +11,8 @@
     "@storybook/addon-ondevice-actions": "^5.1.9",
     "@types/pouchdb": "^6.4.0",
     "@types/react-navigation": "^3.0.7",
+    "@types/react-redux": "^7.1.1",
+    "deox": "^2.1.0",
     "events": "^3.0.0",
     "expo": "^33.0.0",
     "expo-file-system": "^5.0.1",
@@ -24,7 +26,10 @@
     "react-native": "https://github.com/expo/react-native/archive/sdk-33.0.0.tar.gz",
     "react-native-swipeout": "^2.3.6",
     "react-native-web": "^0.11.4",
-    "react-navigation": "^3.11.1"
+    "react-navigation": "^3.11.1",
+    "react-redux": "^7.1.0",
+    "redux": "^4.0.4",
+    "redux-loop": "^5.0.0"
   },
   "devDependencies": {
     "@babel/core": "^7.5.5",

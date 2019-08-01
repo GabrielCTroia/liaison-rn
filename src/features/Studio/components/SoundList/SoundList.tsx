@@ -1,4 +1,4 @@
-import React, { FunctionComponent } from 'react';
+import React from 'react';
 import { StyleSheet, ViewProps, View, FlatList, Text, TouchableOpacity } from 'react-native';
 import { InputField } from '../../../../components/InputField';
 import { Effects, Colors } from '../../../../styles';

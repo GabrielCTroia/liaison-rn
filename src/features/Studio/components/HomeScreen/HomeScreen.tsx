@@ -1,13 +1,14 @@
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
-import { Colors } from '../../styles';
-import { RecordButton } from './components/RecordButton';
-import { SoundList, SoundEntry } from './components/SoundList/SoundList';
-import { SaveSound } from './components/SaveSound/SaveSound';
-import { db } from '../../db';
+import { Colors } from '../../../../styles';
+import { RecordButton } from '../RecordButton';
+import { SoundList, SoundEntry } from '../SoundList/SoundList';
+import { SaveSound } from '../SaveSound/SaveSound';
+import { db } from '../../../../db';
 
 export type HomeScreenProps = {
   // navigation: NavigationScreenProp<any, any>;
+  // items x
 }
 
 type State = {
