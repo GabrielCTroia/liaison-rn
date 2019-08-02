@@ -1,56 +1,32 @@
-import { AudioRecord } from './types';
+import { AudioRecord, StudioState } from './types';
 import { Dispatch } from 'redux';
 import db from '../../db/pouchdb';
+import { createAction, createReducer, Action } from 'deox';
 
-export const FETCH_AUDIO_RECORDS_REQUEST = 'FETCH_AUDIO_RECORDS_REQUEST';
-export const FETCH_AUDIO_RECORDS_SUCCESS = 'FETCH_AUDIO_RECORDS_SUCCESS';
-export const FETCH_AUDIO_RECORDS_FAILURE = 'FETCH_AUDIO_RECORDS_FAILURE';
-
-type FetchAudioRecordsRequestAction = {
-  type: typeof FETCH_AUDIO_RECORDS_REQUEST,
-}
-
-type FetchAudioRecordsSuccessAction = {
-  type: typeof FETCH_AUDIO_RECORDS_SUCCESS,
-  payload: AudioRecord[];
-}
-
-type FetchAudioRecordsFailureAction = {
-  type: typeof FETCH_AUDIO_RECORDS_FAILURE,
-  error: Error,
-}
-
-
-export type StudioActions =
-  FetchAudioRecordsRequestAction |
-  FetchAudioRecordsSuccessAction |
-  FetchAudioRecordsFailureAction;
-
-export const fetchAudioRecordsRequest = (): StudioActions => ({
-  type: 'FETCH_AUDIO_RECORDS_REQUEST',
-});
-
-export const fetchAudioRecordsSuccess = (payload: AudioRecord[]): StudioActions => ({
-  type: 'FETCH_AUDIO_RECORDS_SUCCESS',
-  payload,
-});
-
-export const fetchAudioRecordsFailure = (): StudioActions => ({
-  type: 'FETCH_AUDIO_RECORDS_FAILURE',
-  error: new Error(),
-});
-
-// Action Creators
+const fetchAudioRecordsRequest = createAction('[Studio] Fetch Audio Records');
+const fetchAudioRecordsSuccess = createAction('[Studio] Fetch Audio Success', (resolve) => (p: AudioRecord[]) => resolve(p));
+const fetchAudioRecordsFailure = createAction('[Studio] Fetch Audio Records Failure', (resolve) => (p: Error) => resolve(p));
 
 export const fetchAudioRecords = async (dispatch: Dispatch) => {
   dispatch(fetchAudioRecordsRequest());
 
-  const allItems = await db.allDocs({ include_docs: true });
-  const asAudioRecords = allItems.rows.map((r: any) => r.doc as AudioRecord);
+  try {
+    const allItems = await db.allDocs({ include_docs: true });
+    const asAudioRecords = allItems.rows.map((r: any) => r.doc as AudioRecord);
 
-  dispatch(fetchAudioRecordsSuccess(asAudioRecords));
+    dispatch(fetchAudioRecordsSuccess(asAudioRecords));
+  } catch (e) {
+    fetchAudioRecordsFailure(e);
+  }
 }
 
-export const saveAudioRecord = async(r: AudioRecord) => {
-  
+const initialState: StudioState = {
+  audioRecords: [],
 }
+
+export const reducer = createReducer(initialState, (handleAction) => [
+  handleAction(fetchAudioRecordsSuccess, (state, { payload }) => ({
+    ...state,
+    audioRecords: payload,
+  })),
+]) 

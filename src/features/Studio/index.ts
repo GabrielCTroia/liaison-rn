@@ -1,2 +1,2 @@
 export * from './navigator';
-export * from './reducer';
+export * from './actions';
