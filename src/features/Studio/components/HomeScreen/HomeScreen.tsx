@@ -7,12 +7,15 @@ import { SaveSound } from '../SaveSound/SaveSound';
 import { db } from '../../../../db';
 import { AudioRecord } from '../../types';
 import { deepfreeze } from '../../../../lib/deepfreeze';
+// import console = require('console');
 
 // This pattern of typeing is inspired by this post
 //  https://medium.com/@martin_hotell/10-typescript-pro-tips-patterns-with-or-without-react-5799488d6680
 // Not sure I like 100%, but I do see the point behind: the implementation being the source of truth!
 
-type Props = typeof defaultProps;
+type Props = typeof defaultProps & {
+  fetch: () => void;
+};
 type State = ReturnType<typeof getInitialState>;
 
 const defaultProps = deepfreeze({
@@ -35,28 +38,30 @@ export class HomeScreen extends Component<Props, State> {
 
   readonly state = getInitialState(this.props);
 
-  private async refreshAllRecordings() {
-    const allRecordings = await db.allDocs({ include_docs: true });
+  // private async refreshAllRecordings() {
+  //   const allRecordings = await db.allDocs({ include_docs: true });
 
-    this.setState({
-      soundItems: allRecordings.rows.map((r: any) => r.doc as AudioRecord),
-    });
-  }
+  //   this.setState({
+  //     soundItems: allRecordings.rows.map((r: any) => r.doc as AudioRecord),
+  //   });
+  // }
 
-  componentWillMount() {
-    db.changes({
-      since: 'now',
-      live: true,
-      include_docs: true
-    }).on('change', () => {
-      // Here we could optimize but there's no need as of now!
+  // This will go outside
+  // componentWillMount() {
+  //   db.changes({
+  //     since: 'now',
+  //     live: true,
+  //     include_docs: true
+  //   }).on('change', () => {
+  //     // Here we could optimize but there's no need as of now!
 
-      this.refreshAllRecordings();
-    });
-  }
+  //     this.refreshAllRecordings();
+  //   });
+  // }
 
   componentDidMount() {
-    this.refreshAllRecordings();
+    // this.refreshAllRecordings();
+    this.props.fetch();
   }
 
   private renderSaveAsInput() {
@@ -73,9 +78,10 @@ export class HomeScreen extends Component<Props, State> {
   }
 
   private renderList() {
+    console.log('render list', this.props);
 
     return <SoundList
-      items={this.state.queriedItems || this.state.soundItems}
+      items={this.state.queriedItems || this.props.audioRecords}
       onDelete={(item: any) => {
         db.remove(item);
       }}

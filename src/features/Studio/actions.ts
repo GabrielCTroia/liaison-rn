@@ -1,4 +1,6 @@
 import { AudioRecord } from './types';
+import { Dispatch } from 'redux';
+import db from '../../db/pouchdb';
 
 export const FETCH_AUDIO_RECORDS_REQUEST = 'FETCH_AUDIO_RECORDS_REQUEST';
 export const FETCH_AUDIO_RECORDS_SUCCESS = 'FETCH_AUDIO_RECORDS_SUCCESS';
@@ -18,6 +20,7 @@ type FetchAudioRecordsFailureAction = {
   error: Error,
 }
 
+
 export type StudioActions =
   FetchAudioRecordsRequestAction |
   FetchAudioRecordsSuccessAction |
@@ -27,9 +30,9 @@ export const fetchAudioRecordsRequest = (): StudioActions => ({
   type: 'FETCH_AUDIO_RECORDS_REQUEST',
 });
 
-export const fetchAudioRecordsSuccess = (): StudioActions => ({
+export const fetchAudioRecordsSuccess = (payload: AudioRecord[]): StudioActions => ({
   type: 'FETCH_AUDIO_RECORDS_SUCCESS',
-  payload: [],
+  payload,
 });
 
 export const fetchAudioRecordsFailure = (): StudioActions => ({
@@ -37,3 +40,17 @@ export const fetchAudioRecordsFailure = (): StudioActions => ({
   error: new Error(),
 });
 
+// Action Creators
+
+export const fetchAudioRecords = async (dispatch: Dispatch) => {
+  dispatch(fetchAudioRecordsRequest());
+
+  const allItems = await db.allDocs({ include_docs: true });
+  const asAudioRecords = allItems.rows.map((r: any) => r.doc as AudioRecord);
+
+  dispatch(fetchAudioRecordsSuccess(asAudioRecords));
+}
+
+export const saveAudioRecord = async(r: AudioRecord) => {
+  
+}
