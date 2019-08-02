@@ -1,35 +1,26 @@
-import React from 'react';
-import { StyleSheet, ViewProps, View, FlatList, Text, TouchableOpacity } from 'react-native';
+import React, { Component } from 'react';
+import { StyleSheet, View, FlatList, Text, TouchableOpacity } from 'react-native';
 import { InputField } from '../../../../components/InputField';
 import { Effects, Colors } from '../../../../styles';
 import { Player } from '../../../../lib/Player';
 import Swipeout from 'react-native-swipeout';
+import { AudioRecord } from '../../types';
+import { deepfreeze } from '../../../../lib/deepfreeze';
 
-export type SoundEntry = {
-  uri: string;
-  name: string;
-}
+type Props = typeof defaultProps;
 
-type SoundListProps = ViewProps & {
-  items: SoundEntry[];
-  onDelete: (item: SoundEntry) => void;
-  onSearch: (query: string) => void;
-}
+const defaultProps = {
+  ...deepfreeze({
+    items: [] as AudioRecord[],
+  }),
+  onDelete: (_: AudioRecord) => { },
+  onSearch: (_: string) => { },
+};
 
+export class SoundList extends Component<Props> {
+  private player: Player = new Player();
 
-export class SoundList extends React.Component<SoundListProps> {
-  private player: Player;
-
-  constructor(props: SoundListProps) {
-    super(props);
-
-    this.player = new Player();
-  }
-
-  static defaultProps = {
-    onDelete: () => { },
-    onSearch: () => { },
-  }
+  static defaultProps = defaultProps;
 
   render() {
     return (

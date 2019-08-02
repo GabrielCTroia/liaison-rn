@@ -1,43 +1,45 @@
-import React from 'react';
+import React, { Component } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { Colors } from '../../../../styles';
 import { RecordButton } from '../RecordButton';
-import { SoundList, SoundEntry } from '../SoundList/SoundList';
+import { SoundList } from '../SoundList/SoundList';
 import { SaveSound } from '../SaveSound/SaveSound';
 import { db } from '../../../../db';
+import { AudioRecord } from '../../types';
+import { deepfreeze } from '../../../../lib/deepfreeze';
 
-export type HomeScreenProps = {
-  // navigation: NavigationScreenProp<any, any>;
-  // items x
-}
+// This pattern of typeing is inspired by this post
+//  https://medium.com/@martin_hotell/10-typescript-pro-tips-patterns-with-or-without-react-5799488d6680
+// Not sure I like 100%, but I do see the point behind: the implementation being the source of truth!
 
-type State = {
-  recordedSoundUri?: string;
-  soundItems: SoundEntry[];
-  queriedItems?: SoundEntry[];
-}
+type Props = typeof defaultProps;
+type State = ReturnType<typeof getInitialState>;
 
-export class HomeScreen extends React.Component<HomeScreenProps, State> {
+const defaultProps = deepfreeze({
+  audioRecords: [] as AudioRecord[],
+});
+
+const getInitialState = (props: Props) => ({
+  recordedSoundUri: '',
+  soundItems: props.audioRecords,
+  queriedItems: undefined as undefined | typeof props.audioRecords,
+});
+
+export class HomeScreen extends Component<Props, State> {
 
   static navigationOptions = {
     header: null,
   };
 
-  constructor(props: HomeScreenProps) {
-    super(props);
+  static defaultProps = defaultProps;
 
-    this.state = {
-      recordedSoundUri: undefined,
-      soundItems: [],
-      queriedItems: undefined,
-    }
-  }
+  readonly state = getInitialState(this.props);
 
   private async refreshAllRecordings() {
     const allRecordings = await db.allDocs({ include_docs: true });
 
     this.setState({
-      soundItems: allRecordings.rows.map((r: any) => r.doc as SoundEntry),
+      soundItems: allRecordings.rows.map((r: any) => r.doc as AudioRecord),
     });
   }
 
@@ -65,7 +67,7 @@ export class HomeScreen extends React.Component<HomeScreenProps, State> {
     return <SaveSound
       soundUri={this.state.recordedSoundUri}
       onSaved={async () => {
-        this.setState({ recordedSoundUri: undefined });
+        this.setState({ recordedSoundUri: '' });
       }}
     />
   }
