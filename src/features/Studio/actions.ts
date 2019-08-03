@@ -24,7 +24,7 @@ export const reducer = createReducer(initialState, (handleAction) => [
   })),
   handleAction(saveAudioRecordSuccess, (state, { payload }) => ({
     ...state,
-    audioRecords: state.audioRecords.concat(payload),
+    audioRecords: [payload].concat(state.audioRecords),
   })),
   handleAction(deleteAudioRecordSuccess, (state, { payload }) => ({
     ...state,

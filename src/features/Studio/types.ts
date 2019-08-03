@@ -1,15 +1,17 @@
-export type AudioRecord = {
+import { DeepReadonly } from '../../lib/deepfreeze';
+
+export type AudioRecord = DeepReadonly<{
   id: string;
   uri: string;
   name: string;
   createdAt: Date;
-}
+}>;
 
-export type AudioRecordCreation = {
+export type AudioRecordCreation = DeepReadonly<{
   uri: string;
   name: string;
-}
+}>;
 
-export type StudioState = Readonly<{
-  audioRecords: ReadonlyArray<AudioRecord>;
+export type StudioState = DeepReadonly<{
+  audioRecords: AudioRecord[];
 }>;

@@ -4,10 +4,8 @@ import { Colors } from '../../../../styles';
 import { RecordButton } from '../RecordButton';
 import { SoundList } from '../SoundList/SoundList';
 import { SaveSound } from '../SaveSound/SaveSound';
-import { db } from '../../../../db';
 import { AudioRecord, AudioRecordCreation } from '../../types';
 import { deepfreeze } from '../../../../lib/deepfreeze';
-// import console = require('console');
 
 // This pattern of typeing is inspired by this post
 //  https://medium.com/@martin_hotell/10-typescript-pro-tips-patterns-with-or-without-react-5799488d6680
@@ -40,27 +38,6 @@ export class HomeScreen extends Component<Props, State> {
   static defaultProps = defaultProps;
 
   readonly state = getInitialState(this.props);
-
-  // private async refreshAllRecordings() {
-  //   const allRecordings = await db.allDocs({ include_docs: true });
-
-  //   this.setState({
-  //     soundItems: allRecordings.rows.map((r: any) => r.doc as AudioRecord),
-  //   });
-  // }
-
-  // This will go outside
-  // componentWillMount() {
-  //   db.changes({
-  //     since: 'now',
-  //     live: true,
-  //     include_docs: true
-  //   }).on('change', () => {
-  //     // Here we could optimize but there's no need as of now!
-
-  //     this.refreshAllRecordings();
-  //   });
-  // }
 
   componentDidMount() {
     this.props.fetch();

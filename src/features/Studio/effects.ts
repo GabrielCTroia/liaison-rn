@@ -22,6 +22,7 @@ export const fetchAudioRecords = () => async (dispatch: Dispatch) => {
     const allItems = await db.allDocs({ include_docs: true });
     const asAudioRecords = allItems.rows.map((r: any) => ({
       ...r.doc,
+      id: r.doc._id,
       createdAt: new Date(r.doc.createdAt),
     }) as AudioRecord);
 

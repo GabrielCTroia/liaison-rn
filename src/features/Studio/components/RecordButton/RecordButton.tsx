@@ -1,10 +1,9 @@
 import React, { FunctionComponent, useEffect, useState } from 'react';
 import { StyleSheet, ViewProps } from 'react-native';
-import { Recorder, Sound } from '../../../../lib/Recorder';
+import { Recorder } from '../../../../lib/Recorder';
 import { Colors } from '../../../../styles';
 import { CircleButton } from '../../../../components/CircleButton';
-
-export type RecordedSound = Sound;
+import * as Haptics from 'expo-haptics';
 
 type RecordButtonProps = ViewProps & {
   onRecorded?: (uri: string) => void;
@@ -24,10 +23,15 @@ export const RecordButton: FunctionComponent<RecordButtonProps> = (props) => {
   }, [recordings]);
   
   const startRecording = () => {
+    // Haptics.impactAsync();
+    Haptics.notificationAsync();
+
     recorder.start();
   }
 
   const stopRecording = async () => {
+    // Haptics.notificationAsync();
+
     const sound = await recorder.stopAndGetRecording();
 
     // console.log('Recording Result', recording);

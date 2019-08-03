@@ -13,6 +13,7 @@ const defaultProps = {
   ...deepfreeze({
     items: [] as AudioRecord[],
   }),
+
   onDelete: (_: AudioRecord) => { },
   onSearch: (_: string) => { },
 };
@@ -37,7 +38,7 @@ export class SoundList extends Component<Props> {
         <FlatList
           style={styles.list}
           data={this.props.items}
-          keyExtractor={(item) => item.name}
+          keyExtractor={(item) => item.id}
           renderItem={({ item }) => (
             <Swipeout style={styles.swipeOut} right={[
               {
