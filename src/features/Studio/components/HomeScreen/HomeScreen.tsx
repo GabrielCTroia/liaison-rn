@@ -18,15 +18,15 @@ type Props = typeof defaultProps & {
   delete: (r: AudioRecord) => void;
 };
 
-type State = ReturnType<typeof getInitialState>;
+type State = typeof defaultState;
 
 const defaultProps = deepfreeze({
   audioRecords: [] as AudioRecord[],
 });
 
-const getInitialState = (props: Props) => ({
+const defaultState = deepfreeze({
   recordedSoundUri: '',
-  queriedAudioRecords: undefined as undefined | typeof props.audioRecords,
+  queriedAudioRecords: undefined as undefined | AudioRecord[],
 });
 
 export class HomeScreen extends Component<Props, State> {
@@ -37,7 +37,7 @@ export class HomeScreen extends Component<Props, State> {
 
   static defaultProps = defaultProps;
 
-  readonly state = getInitialState(this.props);
+  readonly state = defaultState;
 
   componentDidMount() {
     this.props.fetch();
@@ -64,20 +64,6 @@ export class HomeScreen extends Component<Props, State> {
     return <SoundList
       items={queriedAudioRecords ? queriedAudioRecords : this.props.audioRecords}
       onDelete={(record) => this.props.delete(record)}
-      onSearch={(query) => {
-        if (!query) {
-          this.setState({ queriedAudioRecords: undefined });
-
-          return;
-        }
-
-        const normalizedQuery = query.toLowerCase();
-
-        const nextQueriedAudioRecords = this.props.audioRecords
-          .filter((item) => item.name.slice(0, query.length).toLowerCase() === normalizedQuery);
-
-        this.setState({ queriedAudioRecords: nextQueriedAudioRecords });
-      }}
     />
   }
 
