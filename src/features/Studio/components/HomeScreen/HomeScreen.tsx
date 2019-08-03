@@ -5,7 +5,7 @@ import { RecordButton } from '../RecordButton';
 import { SoundList } from '../SoundList/SoundList';
 import { SaveSound } from '../SaveSound/SaveSound';
 import { db } from '../../../../db';
-import { AudioRecord } from '../../types';
+import { AudioRecord, AudioRecordCreation } from '../../types';
 import { deepfreeze } from '../../../../lib/deepfreeze';
 // import console = require('console');
 
@@ -15,7 +15,10 @@ import { deepfreeze } from '../../../../lib/deepfreeze';
 
 type Props = typeof defaultProps & {
   fetch: () => void;
+  save: (r: AudioRecordCreation) => void;
+  delete: (r: AudioRecord) => void;
 };
+
 type State = ReturnType<typeof getInitialState>;
 
 const defaultProps = deepfreeze({
@@ -60,7 +63,6 @@ export class HomeScreen extends Component<Props, State> {
   // }
 
   componentDidMount() {
-    // this.refreshAllRecordings();
     this.props.fetch();
   }
 
@@ -71,20 +73,18 @@ export class HomeScreen extends Component<Props, State> {
 
     return <SaveSound
       soundUri={this.state.recordedSoundUri}
-      onSaved={async () => {
+      onSave={async (record) => {
         this.setState({ recordedSoundUri: '' });
+
+        this.props.save(record);
       }}
     />
   }
 
   private renderList() {
-    console.log('render list', this.props);
-
     return <SoundList
       items={this.state.queriedItems || this.props.audioRecords}
-      onDelete={(item: any) => {
-        db.remove(item);
-      }}
+      onDelete={(record) => this.props.delete(record)}
       onSearch={(query) => {
         if (!query) {
           this.setState({

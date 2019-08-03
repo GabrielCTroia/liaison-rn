@@ -4,58 +4,28 @@ import { InputField } from '../../../../components/InputField';
 import { Effects, Colors, Layout } from '../../../../styles';
 import { CircleButton } from '../../../../components/CircleButton';
 import { Player } from '../../../../lib/Player';
-import { SoundEntry } from '../SoundList/SoundList';
-import * as FileSystem from 'expo-file-system';
-import { db } from '../../../../db';
-// import console = require('console');
+import { AudioRecordCreation } from '../../types';
 
 
-type SoundListProps = {
+type Props = {
   soundUri: string;
-  onSaved: (s: SoundEntry) => void;
+  onSave: (audioRecordInfo: AudioRecordCreation) => void;
 }
 
 type State = {
   soundName: string;
 }
 
-export class SaveSound extends React.Component<SoundListProps, State> {
+export class SaveSound extends React.Component<Props, State> {
 
-  private player: Player;
+  private player = new Player();
 
-  constructor(props: SoundListProps) {
-    super(props);
-
-    this.player = new Player();
-
-    this.state = {
-      soundName: '',
-    }
+  readonly state = {
+    soundName: '',
   }
 
-  private async playSound() {
+  async playSound() {
     await this.player.play(this.props.soundUri);
-  }
-
-  private async save() {
-    const fileName = this.props.soundUri.split('/').slice(-1)[0];
-    const nextUri = `${FileSystem.documentDirectory}${fileName}`;
-
-    await FileSystem.copyAsync({
-      from: this.props.soundUri,
-      to: nextUri,
-    });
-
-    const resource = {
-      userId: 0, // This is hardcoded as me for now. Just here to allow me to think of users
-      name: this.state.soundName,
-      uri: nextUri,
-    }
-
-    // TODO: this should not be here!
-    await db.post(resource);
-
-    this.props.onSaved(resource);
   }
 
   render() {
@@ -79,7 +49,10 @@ export class SaveSound extends React.Component<SoundListProps, State> {
           </View>
           <Button
             disabled={this.state.soundName.length === 0}
-            onPress={() => this.save()}
+            onPress={() => this.props.onSave({
+              uri: this.props.soundUri,
+              name: this.state.soundName,
+            })}
             title="Done"
           />
         </View>

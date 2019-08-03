@@ -1,18 +1,27 @@
 import { connect } from 'react-redux';
 import { HomeScreen } from '../components/HomeScreen';
-import { fetchAudioRecords } from '../actions';
-import { Dispatch } from 'redux';
+import { fetchAudioRecords, deleteAudioRecord } from '../effects';
 import { RootState } from '../../../redux/types';
-// import console = require('console');
-// import console = require('console');
+import { Dispatch, bindActionCreators } from 'redux';
+import { saveAudioRecord } from '../effects';
+
 
 const mapStateToProps = ({ studio }: RootState) => ({
   audioRecords: studio.audioRecords,
 });
 
+const mapDispatchToProps = (dispatch: Dispatch) => {
+  return bindActionCreators(
+    {
+      fetch: fetchAudioRecords,
+      save: saveAudioRecord,
+      delete: deleteAudioRecord,
+    },
+    dispatch
+  );
+}
+
 export const HomeScreenContainer = connect(
   mapStateToProps,
-  (dispatch: Dispatch) => ({
-    fetch: () => fetchAudioRecords(dispatch),
-  })
-)(HomeScreen); 
+  mapDispatchToProps,
+)(HomeScreen);
