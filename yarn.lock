@@ -1497,6 +1497,13 @@
     "@types/prop-types" "*"
     csstype "^2.2.0"
 
+"@types/redux-thunk@^2.1.0":
+  version "2.1.0"
+  resolved "https://registry.yarnpkg.com/@types/redux-thunk/-/redux-thunk-2.1.0.tgz#bc2b6e972961831afb82a9bf4f06726e351f9416"
+  integrity sha1-vCtulylhgxr7gqm/TwZybjUflBY=
+  dependencies:
+    redux-thunk "*"
+
 "@types/storybook__react-native@^3.0.5":
   version "3.0.5"
   resolved "https://registry.yarnpkg.com/@types/storybook__react-native/-/storybook__react-native-3.0.5.tgz#69459947400e5d6a418ed2f7726540f2dbae0cdf"
@@ -7134,11 +7141,6 @@ redux-immutable-state-invariant@^2.1.0:
     invariant "^2.1.0"
     json-stringify-safe "^5.0.1"
 
-redux-loop@^5.0.0:
-  version "5.0.0"
-  resolved "https://registry.yarnpkg.com/redux-loop/-/redux-loop-5.0.0.tgz#439982a001244c32e24b30619479bd887471c4d8"
-  integrity sha512-q6CCux5XRLZJ9jaceET4nyViJkUy6+JFI4RDBH667T8lI3pG/npbQKjEx4uZEpL8dYUrkeCrwdc1CtEzQ0EzjQ==
-
 redux-starter-kit@0.5.1:
   version "0.5.1"
   resolved "https://registry.yarnpkg.com/redux-starter-kit/-/redux-starter-kit-0.5.1.tgz#8b11ef234624a20c9cd384892033f7772331e9e3"
@@ -7151,7 +7153,7 @@ redux-starter-kit@0.5.1:
     redux-thunk "^2.2.0"
     selectorator "^4.0.3"
 
-redux-thunk@^2.2.0:
+redux-thunk@*, redux-thunk@^2.2.0, redux-thunk@^2.3.0:
   version "2.3.0"
   resolved "https://registry.yarnpkg.com/redux-thunk/-/redux-thunk-2.3.0.tgz#51c2c19a185ed5187aaa9a2d08b666d0d6467622"
   integrity sha512-km6dclyFnmcvxhAcrQV2AkZmPQjzPDjgVlQtR0EQjxZPyJ0BnMf3in1ryuR8A2qU0HldVRfxYXbFSKlI3N7Slw==

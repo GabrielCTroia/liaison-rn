@@ -1,7 +1,7 @@
 import { AudioRecord, StudioState } from './types';
 import { Dispatch } from 'redux';
 import db from '../../db/pouchdb';
-import { createAction, createReducer, Action } from 'deox';
+import { createAction, createReducer } from 'deox';
 
 const fetchAudioRecordsRequest = createAction('[Studio] Fetch Audio Records');
 const fetchAudioRecordsSuccess = createAction('[Studio] Fetch Audio Success', (resolve) => (p: AudioRecord[]) => resolve(p));
