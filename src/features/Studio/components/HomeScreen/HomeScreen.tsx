@@ -6,6 +6,7 @@ import { SoundList } from '../SoundList/SoundList';
 import { SaveSound } from '../SaveSound/SaveSound';
 import { AudioRecord, AudioRecordCreation } from '../../types';
 import { deepfreeze } from '../../../../lib/deepfreeze';
+// import console = require('console');
 
 // This pattern of typeing is inspired by this post
 //  https://medium.com/@martin_hotell/10-typescript-pro-tips-patterns-with-or-without-react-5799488d6680
@@ -25,8 +26,7 @@ const defaultProps = deepfreeze({
 
 const getInitialState = (props: Props) => ({
   recordedSoundUri: '',
-  soundItems: props.audioRecords,
-  queriedItems: undefined as undefined | typeof props.audioRecords,
+  queriedAudioRecords: undefined as undefined | typeof props.audioRecords,
 });
 
 export class HomeScreen extends Component<Props, State> {
@@ -59,26 +59,24 @@ export class HomeScreen extends Component<Props, State> {
   }
 
   private renderList() {
+    const { queriedAudioRecords } = this.state;
+
     return <SoundList
-      items={this.state.queriedItems || this.props.audioRecords}
+      items={queriedAudioRecords ? queriedAudioRecords : this.props.audioRecords}
       onDelete={(record) => this.props.delete(record)}
       onSearch={(query) => {
         if (!query) {
-          this.setState({
-            queriedItems: undefined,
-          });
+          this.setState({ queriedAudioRecords: undefined });
 
           return;
         }
 
         const normalizedQuery = query.toLowerCase();
 
-        const nextQueriedItems = this.state.soundItems
+        const nextQueriedAudioRecords = this.props.audioRecords
           .filter((item) => item.name.slice(0, query.length).toLowerCase() === normalizedQuery);
 
-        this.setState({
-          queriedItems: nextQueriedItems,
-        });
+        this.setState({ queriedAudioRecords: nextQueriedAudioRecords });
       }}
     />
   }

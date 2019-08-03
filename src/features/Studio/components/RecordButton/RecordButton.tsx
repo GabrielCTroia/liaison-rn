@@ -23,18 +23,13 @@ export const RecordButton: FunctionComponent<RecordButtonProps> = (props) => {
   }, [recordings]);
   
   const startRecording = () => {
-    // Haptics.impactAsync();
-    Haptics.notificationAsync();
+    Haptics.impactAsync();
 
     recorder.start();
   }
 
   const stopRecording = async () => {
-    // Haptics.notificationAsync();
-
     const sound = await recorder.stopAndGetRecording();
-
-    // console.log('Recording Result', recording);
 
     if (sound && props.onRecorded) {
       props.onRecorded(sound);
